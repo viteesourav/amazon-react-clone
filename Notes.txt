@@ -1,0 +1,53 @@
+** NOTES ON AMAZON CLONE PROJECT [Front-End Design using React and Redux Comcepts] ***
+
+-- App.jsx Includes Holds the Whole Product Structure: 
+    1) Navigation & Nav bar design.
+    2) HomePage Design.
+    3) Product Info Page Design.
+    4) Product Search Landing Page.
+    5) CheckOut Page.
+
+** Naviagtion & Nav bar Design
+   -- The Whole Nav bar and Naviagtion is implemented in App.jsx.
+
+-- For Handling Naviagtion and Linking Components with Their Route, we used [react-router-dom]
+   -- react-router-dom provides: [npm package to handle navigation]
+      1) BrowserRouter: provides a Routes for web Browser.
+         -- It will also handeles the Back and Forward navigation from the Browser. 
+      2) Routes 
+         -- It holds all the Route for each web-page for the application.
+         -- eg: HomePage will be one Route, SearchResult Landing page will be one Route etc.
+      3) Route
+         -- This Binds the url and Component to load together.
+         -- eg: <Route exact path='/product/:productId' element={<ProductPage />}>
+         -- i.e whenever we go the above path, It will load the ProductPage Component
+      4) Link, setParam and useParam
+         -- Link is used for naviagte to a particular web-url Path.
+         -- eg: <Link to={'/product/${productId}'}> ..... </Link> [The Content inside the Link will act as a hyperLink]
+         -- If you sending some path Param in the url, That can be extracted using useParams()
+           eg: const {productId} = useParams()
+      5) useNavigate and createSearchParams
+         -- For Adding Query params when naviagted.
+         -- craete an Object using useNaviagte that takes pathname and search [using createSeachParams({..})].
+         -- At the destination, You can extract the search paramters using 
+            const[searchParams] = useSearchParams(), searchParams.get(queryParamName).
+     
+-- Navbar UI changes:
+   -- 
+
+** HomePage Design:
+
+** Product Info Design:
+
+** Product Search Landing Page:
+
+** CheckOut Page:
+
+**TailWind installation Steps:
+Link: https://tailwindcss.com/docs/guides/vite [for vite setup]
+-- Please Follow the Installation Guide for the specific Framework while setting up Tailwind.
+-- In Our case, follow the tailwind installation guide for vite project specifically
+
+** TailWind CSS reference:
+-- 
+
