@@ -11,10 +11,10 @@ function CarouselProduct() {
     <div className='bg-white mx-3 mb-5'>
         <div className='text-2xl font-semibold p-3'>Best Seller</div>
         <Swiper
-            loop={true}
-            slidesPerView={6}
+            loop
+            slidesPerView={5}
             spaceBetween={6}
-            navigation={true}
+            navigation
             modules={[Navigation]}
         >
             {Array.from({length: 13}, (_, index) =>

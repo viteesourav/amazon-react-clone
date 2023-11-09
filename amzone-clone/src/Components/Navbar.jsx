@@ -31,11 +31,11 @@ function Navbar() {
                     <div className='text-xs md:text-sm xl:text-lg'>Returns</div>
                     <div className='text-base xl:text-lg font-bold'>& Orders</div>
                 </div>
-                <div className='flex px-3'>
+                <div className='flex flex-col px-3'>
                     <Link to={'/checkout'}>
-                        <ShoppingBagIcon className='h-[48px]'/>
+                        <ShoppingBagIcon className='h-[28px] mx-auto'/>
                     </Link>
-                    <div className='flex flex-col-reverse text-base xl:text-lg font-bold'>
+                    <div className='text-base xl:text-lg font-bold'>
                         Cart
                     </div>
                 </div>

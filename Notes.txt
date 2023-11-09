@@ -1,5 +1,22 @@
 ** NOTES ON AMAZON CLONE PROJECT [Front-End Design using React and Redux Comcepts] ***
 
+-- Application Layout:
+   -- App is created using vite i.e npm create vite [Js App]
+   1) public Folder: 
+      -- All Resources like images and Mock Data is stored here
+      -- Items inside public Folder are directly server to all Components for easy access.
+   2) Components Folder:
+      -- All React Components are inside this Floder.
+      -- In Each functional Component, we are exporting the Component.
+      -- index.js maintains the export of all the components at one Place.
+         -- This saves writing multiple line to export individual component.
+         -- eg: import { Carousel, CarouselCategory, CarouselProduct, HomePageCard } from './'
+         -- './' points to the index.js file, where You can easily access other Components using simple destructuring.
+   3) Utils
+      -- Handles Async Service calls to fetch Data using axios [npm package]
+
+-- To Run the App: npm run dev 
+
 -- App.jsx Includes Holds the Whole Product Structure: 
     1) Navigation & Nav bar design.
     2) HomePage Design.
@@ -7,9 +24,9 @@
     4) Product Search Landing Page.
     5) CheckOut Page.
 
-** Naviagtion & Nav bar Design
-   -- The Whole Nav bar and Naviagtion is implemented in App.jsx.
-
+** Naviagtion & Nav bar Design:  [React-router-Dom + NavBar flex box]
+-- The Whole Nav bar and Naviagtion is implemented in App.jsx.
+   -- It stays on consistant through all the Landing Pages.
 -- For Handling Naviagtion and Linking Components with Their Route, we used [react-router-dom]
    -- react-router-dom provides: [npm package to handle navigation]
       1) BrowserRouter: provides a Routes for web Browser.
@@ -33,21 +50,139 @@
             const[searchParams] = useSearchParams(), searchParams.get(queryParamName).
      
 -- Navbar UI changes:
-   -- 
+   -- Under Navbar, we have the flexbox with 3 divs.
+      -- Left Most div:
+         -- holds the link to the amazon Logo and a LINK to naviagte back to the home Page.
+         -- Few other labels.
+      -- Middle div:
+         -- Holds the search Component.
+         ** Search Bar:
+            -- It has 3 main elements:
+               -- select/Options, handles the dropDown for all the products.
+               -- input:text -> One is the search Space.
+               -- searchIcon -> One is the search Icon.
+            -- Search Dowpdown and search bar is a react state constrolled input i.e as we type, the state holds the value.
+            -- The searched text is filtered from the data [fetched using useEffect on comp Mount] and a loop of div shows the value.
+      -- Righ div:
+         -- Holds the Shopping cart logo, Logo is from @heroicons/react [npm package] [** Good Collection of Icons **]
+            NOTE: Give some height to the Icon, In order to popup on the screen.
 
-** HomePage Design:
+** HomePage Design: [Carousel implementation + grid system]
+   -- We have 3 Things in HomePage Layout:
+      1) A sliding Carousel [npm Package: Swiper]
+         -- 2 Things we import from swiper/react: Swiper and SwiperSlide
+            -- Properties for Swiper:
+               -- loop, sliderPerView [No of slides per view], spaceBetween.
+               -- For intractive Slider:
+                  -- navigation adds the left and right button to naviagete the slides.
+                  -- import Navigation and AutoPlay from swiper/module.
+                  -- module takes {[Navigation, AutoPlay]} that automatically slides after the defined delay in autoPlay.
+            -- Properties of SwiperSlide: Holds the Slides to available to swipe
+               -- Images can be included as Slides.
+               -- video also can be include.
+                  NOTE: For showing video control, add controls attribute to video Element.
+      2) Product Cards Layout [using Grid]
+         -- We have Components to Display on the HomePage using the Grid Layout.
+         -- Very Effective in aligning content in a big space.
+      3) 2 More Small Carousel for Product Lists and Category List.
+         -- The 2 carosule also designed using the same Siwper.
+         -- They include On Click naviagte using the react-router-dom's Link and useNaviagte.
 
-** Product Info Design:
+** Product Info Design: [grid design]
+   -- This landing Page Shows more info on a product.
+   -- Product id is coming as a path param from the url. which is extracted using useParams hook [from react-router-dom]
+   -- based on this, we will fetch the Product Info
+   -- UI Design:
+      -- The Entire UI is divided into 10 grid columns [and it is centered]
+      -- left side of the Ui contains the Product Image.
+      -- Middle we show the product Info and Rating, Badge and Product desc.
+      -- Right side we show the Price Info of the Product and Checkout Info 
 
-** Product Search Landing Page:
+** Product Search Landing Page: [flex box design]
+   -- This landing Page shows the Search Result based on the Nav's Search bar.
+      -- NOTE: This is the landing page when we click form Product Category Carousel from the home page.
+      -- Send the selected Category Name as a query param to this page. using [useNavigate and createSearchParams from react-route-dom]
+   -- 2 query Paramaters are recevied: 1) Category 2)Search Text
+   -- This 2 are coming using Naviagte From the Search Click, which is extracted using const obj = useSearchParams() hook [react-router-dom]
+   -- we can extract the query param value using obj.get('queryName').
+   -- Based on this we will fetch the search Items from the backend.
+   -- 2 Cases Handled:
+      1) If only Category is coming -> Show all the Product Cards.
+      2) If Search Text is present -> Show that Particular Item's Card.
+   -- Each Product Card is a Link to naviagte to that particualr Product's Info Page.[uses Product Id as path Param]
+   -- For Each Product Card UI Design:
+      -- Used the Grid method, Whole card takes gird-col-12.
+      -- left part, [takes 2 col space] holds the product image
+      -- right part, [takes rest of 10 col space] holds the product info/Details.
 
-** CheckOut Page:
 
-**TailWind installation Steps:
+NOTE: To show the Particular Currecy Format
+   -- we are using const obj = Intl.NumberFormat('en-GB', {style: "currency", currency:"GBP"});
+   -- anywhere we need to convert number to en-GB currency, just use obj.format(currencyValue);
+
+** CheckOut Page [Redux state Management]
+   -- This landing Page handles the checkout of Prdouct and total Costs On checkOut using Redux Store.
+
+
+** TailWind installation Steps:
 Link: https://tailwindcss.com/docs/guides/vite [for vite setup]
 -- Please Follow the Installation Guide for the specific Framework while setting up Tailwind.
 -- In Our case, follow the tailwind installation guide for vite project specifically
 
-** TailWind CSS reference:
--- 
+NOTE: We have created some custom colors in tailwind.config.js
+   -- In this file, under theme -> extend -> colors -> we have defined custom amazonclone obj with custom color.
 
+** TailWind CSS reference:
+
+-- Postion of the div:
+   min-w-[1200px], w-[200px], h-[60px], space-x-6[induces horizontal spacing among it's children]
+   m-4 [margin all sides], m[t, b, l, r, x, y]-4
+   p-4 [padding all sides], p[t, b, l, r, x, y]-4
+   md:text-sm, lg:text-base,  md: [Any css property] -> This will be in effect after the md breakpoint.
+   m-auto [Position at the center of the container], mx-auto, my-auto [Auto means browser automatically decides left and right margin]
+   relative [Position of the element is relative to the parent]
+   -mt-[400px] [It goes in negative axis, with a negative -400px top value]
+   z-20 [Handles the z axis, to move the things on top of the plane]
+   sm:hidden [Hides the content at the small breakpoint]
+   h-screen [Takes the whole height available in the screen]
+   
+-- handling Borders:   
+   divide-[x,y]-size [x: border for left and right, y: border for top and bottom]
+   divide-slate-400 [sets the border x and y border color]
+   border-slate-500 [sets color to the border i.e all sides]
+   border-[t,b,l,r]-indigo-500 [sets color to each side]
+   border-[2, 4, 8] [sets the width of the border]
+   rounded-[md, lg, full] [Makes the border Rounded]
+   rounded-[t, r, b, l]-[md, lg, full] [Gives more flexibility on deciding the border for each side]
+   rounded-[tl, tr, br, bl]-md [gives access to individual corners i.e top-left, top-bottom, bottom-left, bottom-right]
+
+
+-- flex:
+   flex, items-center, grow [i.e flex-grow, Fills the left out empty place]
+   flex-row, flex-row-reverse, flex-col, flex-col-reverse [Handles the direction of the flex box]
+
+-- grid layout:
+   grid, grid-col-2 [The Whole space is divided into 2 columns, max you can go till 12]
+   gap-4 [space between the columns]
+   col-span-3 [The container takes space of 3 columns]
+
+
+-- font-style:
+   font-[semibold, normal]
+
+--text-style:
+   text-white, text-[xs, sm, base, lg, 2xl, 3xl]
+   text-[left, top, right, bottom] [sets the position of the text]
+   text-red-500 [sets the text color]
+
+-- For Gradiaent Effect:
+   bg-gradient-to-b from-stone-900 [This gives a stone colored gradiant effect in bg from top to bottom]
+
+--image styling:
+   h-[100%] w-[100%] rounded-md 
+   object-[cover, fill, contain] -> Fitting the image in the space
+   object-[top, center, bottom] -> Handles the position of the image.
+
+-- animations and Effects:
+   hover:[property, takes effect when you hover the element]
+   focus:[property, takes effect when the element is in focus]

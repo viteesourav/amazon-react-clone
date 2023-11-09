@@ -9,7 +9,7 @@ function HomePageCard({cardTitle, cardImg, cardLink}) {
         <div className='h-[300px] m-4'>
             <img src={cardImg} alt="CardImg" className="h-[100%] w-[100%] rounded-md object-cover" />
         </div>
-        <div className='text-s xl:text-lg text-center text-blue-400'>
+        <div className='text-xl text-center text-blue-400'>
             <a href="/">{cardLink}</a>
         </div>
     </div>
