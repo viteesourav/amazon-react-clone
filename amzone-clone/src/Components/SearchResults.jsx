@@ -34,7 +34,7 @@ function SearchResults() {
                   <div className='col-span-2 p-4 rounded-l-lg bg-gray-200'>
                     <img className='m-auto' src={product.image_small} alt="" />
                   </div>
-                  <div className='col-span-10 bg-gray-200 rounded-r-lg border-slate-500 hover:bg-gray-300'>
+                  <div className='col-span-10 bg-white rounded-r-lg border-slate-500 hover:bg-gray-100'>
                     <div className='font-medium text-black p-4'>
                       <ProductDetails product={product} ratings={true} />
                       <div className='text-xl xl:text-2xl font-bold text-gray-700 my-2'>{GB_Currency.format(product.price)}</div>

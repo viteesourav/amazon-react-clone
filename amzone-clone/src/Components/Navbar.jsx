@@ -2,8 +2,11 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { ShoppingBagIcon } from '@heroicons/react/24/outline'
 import { Search } from './'
+import { useSelector, useDispatch } from 'react-redux'
+import Tooltip from '@mui/material/Tooltip'
 
 function Navbar() {
+    const cartCount = useSelector(state => state.cart.itemCount);
   return (
     <header className='min-w-[1000px]'>
         <div className='flex items-center bg-amazonclone text-white h-[60px]'>
@@ -31,14 +34,27 @@ function Navbar() {
                     <div className='text-xs md:text-sm xl:text-lg'>Returns</div>
                     <div className='text-base xl:text-lg font-bold'>& Orders</div>
                 </div>
-                <div className='flex flex-col px-3'>
-                    <Link to={'/checkout'}>
-                        <ShoppingBagIcon className='h-[28px] mx-auto'/>
-                    </Link>
-                    <div className='text-base xl:text-lg font-bold'>
-                        Cart
+                
+                <Link to={'/checkout'}>
+                    <div className='flex flex-col px-3'>
+                            <div className='flex flex-row relative'>
+                                <ShoppingBagIcon className='h-[28px]'/>
+                                {cartCount < 10 && cartCount !== 0 && 
+                                    <div className='absolute text-sm right-0 top-0 font-bold text-white bg-orange-400 px-[5px] rounded-full'>
+                                        {cartCount}
+                                    </div> 
+                                }
+                            </div>
+                        {(cartCount >= 10 && cartCount !== 0) ? 
+                          <Tooltip title="Cart Items" arrow className='cursor-pointer'>
+                            <div className='text-xs xl:text-sm font-bold text-white bg-orange-400 mt-1 px-[8px] rounded-full'>
+                                {cartCount}
+                            </div>
+                          </Tooltip> :
+                          <div className='text-base xl:text-lg font-bold'>Cart</div>
+                        }
                     </div>
-                </div>
+                </Link>
             </div>
         </div>
         <div className='flex bg-amazonclone font-semibold text-white space-x-6 text-sm xl:text-base p-2 pl-6'>

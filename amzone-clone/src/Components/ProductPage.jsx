@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { fetchData } from '../utils/callApi';
 import { GB_Currency } from '../utils/constants'
 import { ProductDetails } from './'
+import { useDispatch } from 'react-redux'
+import { addToCart } from '../redux/cartSlice';
 
 function ProductPage() {
 
   const{productId} = useParams();
   const[product, setProduct] = useState(null);
+  const [quantity, setQuantity] = useState("1");
+
+  const dispatch = useDispatch();
 
   useEffect(()=>{
     fetchData('products').then((resp) => {
@@ -44,13 +49,18 @@ function ProductPage() {
               <div className='text-xl xl:text-2xl text-blue-700 font-semibold mt-1'>Free Shipping</div>
               <div className='text-xl xl:text-2xl text-green-700 font-semibold mt-1'>In Stock</div>
               <div className='text-lg xl:text-xl font-normal mt-1'>Quantity: 
-                <select className='text-lg mx-2 px-2 bg-white hover:border-2 border-black rounded-md'>
+                <select className='text-lg mx-2 px-2 bg-gray-200 broder-2 rounded-md hover:border-black' 
+                      value={quantity} 
+                      onChange={(evt) => setQuantity(evt.target.value)}>
                   <option>1</option>
                   <option>2</option>
                   <option>3</option>
                 </select>
               </div>
-              <button className='bg-yellow-400 w-full  text-lg xl:text-xl rounded p-2 mt-3 hover:bg-yellow-500'>Add to Cart</button>
+              <Link to={'/checkout'}>
+                <button className='proceedBtn' 
+                    onClick={()=>dispatch(addToCart({...product, productQty: parseInt(quantity)}))}> Add to Cart</button>
+              </Link>
             </div>
           </div>
         </div>
