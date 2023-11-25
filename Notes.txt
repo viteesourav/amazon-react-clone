@@ -122,6 +122,56 @@ NOTE: To show the Particular Currecy Format
 
 ** CheckOut Page [Redux state Management]
    -- This landing Page handles the checkout of Prdouct and total Costs On checkOut using Redux Store.
+   -- Features:
+      -- It will show the List of all the Products that are added to Key.
+      -- It Naviagtes here as You Click on the Add to Cart from the Product Page.
+      -- It Shows individual Total Cost and The Cost of the whole cart Product.
+      -- It Supports Deleting a Particular Product From the Cart also Updating Individual Product's Qty.
+   -- Redux:
+      -- Tools used to Implement Redux: react-redux and @reduxjs/toolkit
+      -- Redux porivdes a Global State that All the Components may subscribe to and intrate with the state via actionCreaters.
+      -- 3 Things Implemented as a part of Redux:
+         1) configureStore:
+            -- This Holds the Reducer[Takes care updating the store item based on action].
+            -- configureStore, takes obj where key will be the Redux state Name and it's corresponding reducer name.
+
+         2) createSlice:
+            -- Here we configure the Redux State:
+               1) First we define an initial state Object.
+               2) createSlice, takes obj with name, initialstate and reducers.
+               3) Inside Reducers, define All actionCreaters Functions with their respective updates to the state based on actions.
+                  -- Here params are store and action, [Note: action.payload holds the payload passed from dispatch]
+               4) export the necessary things:
+                  1) export the actionCreaters from createSlice().actions;
+                  2) export the reducer from createSlice().reducer. [Used by the Configure Store]
+
+         3) Subscribing to Redux Store
+            -- react-redux provides 'Provider', Wrap the App.jsx with Provider and pass attribute store as above ReduxStore.
+            -- i.e All components inside App.jsx, now can access the Store.
+            -- Components access the store using 2 hooks provided by react-redux
+               1) useSelector()
+                  -- eg: const cartInfo = useSelector(state => state.cart.items);
+                  -- This provide direct Access to the Redux Store holding the cart State.
+
+               2) useDispatch()
+                  -- First you instanciate it. eg: const dispatch = useDispatch();
+                  -- eg: onClick = {() => dispatch(addToCart({** your payload **}))};
+                  -- Here dispatch takes the actionCreater coming from the createSlice. [here addToCart is an action]
+                  -- Inside action, whatever object you pass, will be passed as payload to action.
+                     addToCart: (state, action) => { const payload = action.payload }
+
+   -- UI Design:
+      -- Using grids Mostly. Whole 12 columns we took.
+      -- First 10 Columsn Includes the Product Info and Pricing Details.
+         -- This is again Divided into 8 Columns.
+         -- Fist 6 are for Product and Product Detials.
+            -- Here First 2 Columsn are Used to Show the image For the Product. [Note it's Take you back to product Page OnClick]
+            -- The next 4 Columns are used to Show Product Details, Delete Btn and Qty Options.
+         -- Last 2 are for showing the Price Information.
+      -- Left 2 Columns are used for Showing FRee Delivery Option, with Total Cart Price.
+
+
+** Thus All Features are Implemented and are working Fine **
 
 
 ** TailWind installation Steps:
@@ -132,6 +182,16 @@ Link: https://tailwindcss.com/docs/guides/vite [for vite setup]
 NOTE: We have created some custom colors in tailwind.config.js
    -- In this file, under theme -> extend -> colors -> we have defined custom amazonclone obj with custom color.
 
+NOTE: To have adding Style property conditionaly..
+   eg: className = {`text-center font-normal bg-yellow-400 ${items.lenght > 0 ? 'visible' ? 'hidden'}`} 
+   -- Toggeles the visiblity based on the length of items Array.
+
+NOTE: Sometimes, we can share the styles through out the Application.
+   - go to index.css file
+   - Add a @layer components {...}
+   - inside it write the generic class name, use @apply and write the tailwind property.
+   - Now this class can be used throughout the application and the same style is reflected.
+
 ** TailWind CSS reference:
 
 -- Postion of the div:
@@ -140,12 +200,22 @@ NOTE: We have created some custom colors in tailwind.config.js
    p-4 [padding all sides], p[t, b, l, r, x, y]-4
    md:text-sm, lg:text-base,  md: [Any css property] -> This will be in effect after the md breakpoint.
    m-auto [Position at the center of the container], mx-auto, my-auto [Auto means browser automatically decides left and right margin]
-   relative [Position of the element is relative to the parent]
+   relative [The element is placed normally in the document, but left,right,top,bottom will adjust it's postion from it's default value]
+   static [By default we dont mention any position it's static, i.e in normal Flow of document]
+   absolute[The element is removed from normal doc flow i.e no space it created for this element, adjust the element position with left, right, top, bottom]
    -mt-[400px] [It goes in negative axis, with a negative -400px top value]
    z-20 [Handles the z axis, to move the things on top of the plane]
    sm:hidden [Hides the content at the small breakpoint]
-   h-screen [Takes the whole height available in the screen]
+   h-screen [Takes the whole height current screen i.e 100vh]
+     NOTE: h-screen covers the current whole screen without Scrollbar. Once scrollbar comes and you start scrolling, It will not cover that.
    
+
+Realtive & Absolute position: [**VVVIMP**]   
+   relative + absolute: [Parent set to relative and child set to absolute, enables to properly fine tune the position of child with in the parent container]
+      NOTE: relative keeps the containers align and seperated from each other.
+            -- defining the child as absolute, Makes it independent of the aligment of any other children in the container, thus, it can be aligned specifically anywhere using left, right or top and bottom.
+            -- It can be used to overlap to child elements on top of each other inside a container.
+
 -- handling Borders:   
    divide-[x,y]-size [x: border for left and right, y: border for top and bottom]
    divide-slate-400 [sets the border x and y border color]
@@ -162,7 +232,7 @@ NOTE: We have created some custom colors in tailwind.config.js
    flex-row, flex-row-reverse, flex-col, flex-col-reverse [Handles the direction of the flex box]
 
 -- grid layout:
-   grid, grid-col-2 [The Whole space is divided into 2 columns, max you can go till 12]
+   grid, grid-cols-2 [The Whole space is divided into 2 columns, max you can go till 12]
    gap-4 [space between the columns]
    col-span-3 [The container takes space of 3 columns]
 
@@ -172,8 +242,12 @@ NOTE: We have created some custom colors in tailwind.config.js
 
 --text-style:
    text-white, text-[xs, sm, base, lg, 2xl, 3xl]
-   text-[left, top, right, bottom] [sets the position of the text]
+   text-[left, top, right, bottom] [sets the position of the text inside the container]
    text-red-500 [sets the text color]
+
+--Visibility of container:
+   hidden [This hides the container]
+   visible [This shows the container]
 
 -- For Gradiaent Effect:
    bg-gradient-to-b from-stone-900 [This gives a stone colored gradiant effect in bg from top to bottom]
